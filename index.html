@@ -66,7 +66,11 @@
   <div id="result"></div>
 
    <!-- 背景音乐 -->
-  <audio id="bgm" src="in_your_eyes.mp3" autoplay loop controls></audio>
+ <audio controls autoplay loop>
+  <source src="in_your_eyes.mp3" type="audio/mpeg">
+</audio>
+
+
   <!-- 说明：
     src="music.mp3"  -> 换成你自己的 mp3 文件路径
     autoplay -> 页面打开时自动播放
@@ -150,3 +154,4 @@
   </script>
 </body>
 </html>
+
