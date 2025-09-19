@@ -20,16 +20,15 @@
       position: relative;
       width: 90vw;
       max-width: 400px;
-      aspect-ratio: 1/1;
+      aspect-ratio: 1 / 1; /* 确保是正方形 */
     }
-    #wheel {
+    canvas {
       width: 100%;
       height: 100%;
       border-radius: 50%;
       border: 8px solid #fff;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       transform: rotate(0deg);
-      transition: transform 4s ease-out;
     }
     .pointer {
       position: absolute;
@@ -49,12 +48,24 @@
       cursor: pointer;
       z-index: 10;
       box-shadow: 0 0 8px rgba(0,0,0,0.3);
+      user-select: none;
     }
     #result {
       margin-top: 20px;
       font-size: 20px;
       color: #d35400;
       font-weight: bold;
+    }
+    /* 音乐按钮 */
+    #musicBtn {
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -65,17 +76,12 @@
   </div>
   <div id="result"></div>
 
-   <!-- 背景音乐 -->
- <audio id="bgm" src="In_your_eyes.mp3" autoplay loop controls></audio>
-  <!-- 说明：
-    src="music.mp3"  -> 换成你自己的 mp3 文件路径
-    autoplay -> 页面打开时自动播放
-    loop -> 循环播放
-    controls -> 显示播放器按钮（如果不想让用户看到可以删除）
-  -->
+  <!-- 背景音乐 -->
+  <audio id="bgm" src="In_your_eyes.mp3" loop></audio>
+  <button id="musicBtn" onclick="toggleMusic()">开启音乐</button>
 
   <script>
-    // 奖品和对应概率（数值越大概率越高）
+    // 奖品和对应概率
     const prizes = [
       { name: "奶茶", weight: 50 },   
       { name: "甜品", weight: 25 },    
@@ -88,7 +94,7 @@
 
     let canvas = document.getElementById("wheel");
     let ctx = canvas.getContext("2d");
-    let size = canvas.width = canvas.height = 400;
+    let size = canvas.width = canvas.height = 400; // 固定画布大小
     let arc = 2 * Math.PI / prizes.length;
     let spinning = false;
 
@@ -124,15 +130,15 @@
         }
         random -= prizes[i].weight;
       }
-      return prizes.length - 1; // fallback
+      return prizes.length - 1;
     }
 
     function spin() {
       if (spinning) return;
       spinning = true;
 
-      let prizeIndex = weightedRandom(); // 按概率选中奖品
-      let spins = Math.floor(Math.random() * 3) + 4; // 转几圈
+      let prizeIndex = weightedRandom();
+      let spins = Math.floor(Math.random() * 3) + 4;
       let finalAngle = 360 * spins - (prizeIndex * (360 / prizes.length) + 360/(2*prizes.length));
 
       canvas.style.transition = "transform 4s ease-out";
@@ -142,18 +148,24 @@
         document.getElementById("result").innerText = "抽中：" + prizes[prizeIndex].name;
         spinning = false;
 
-        // 重置角度到对应奖品
+        // 重置角度
         canvas.style.transition = "none";
         canvas.style.transform = `rotate(${-prizeIndex * (360/prizes.length)}deg)`;
       }, 4200);
     }
+
+    // 音乐控制
+    function toggleMusic() {
+      const bgm = document.getElementById("bgm");
+      if (bgm.paused) {
+        bgm.play();
+        document.getElementById("musicBtn").innerText = "关闭音乐";
+      } else {
+        bgm.pause();
+        document.getElementById("musicBtn").innerText = "开启音乐";
+      }
+    }
   </script>
 </body>
 </html>
-
-
-
-
-
-
 
