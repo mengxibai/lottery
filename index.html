@@ -66,9 +66,11 @@
   <div id="result"></div>
 
    <!-- 背景音乐 -->
- <audio controls autoplay loop>
+<audio autoplay loop muted id="bgm">
   <source src="in_your_eyes.mp3" type="audio/mpeg">
 </audio>
+
+<button onclick="document.getElementById('bgm').muted=false">点我开启音乐</button>
 
 
   <!-- 说明：
@@ -154,4 +156,5 @@
   </script>
 </body>
 </html>
+
 
